@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+div.product {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+}
+
+main {
+    width: 100%;
+    margin-bottom: 20px;
+}
