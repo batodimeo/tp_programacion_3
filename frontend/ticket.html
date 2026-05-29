@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <title>Ticket – ArgenGaming</title>
+</head>
+<body>
+
+  <header>
+    <div class="logo-area">
+      <img src="../img/the-evolution-of-gaming-identity-free-png.png" alt="ArgenGaming Logo" width="50">
+      <div>
+        <h1>ArgenGaming</h1>
+        <span class="alumnos">Bautista Di Meo &amp; Manuel Hulej &amp; Agustina Dominguez</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="juegos.html">Juegos</a></li>
+        <li><a href="accesorios.html">Accesorios</a></li>
+      </ul>
+      <button id="btn-tema" class="btn-tema" onclick="toggleTema()">☀️ Claro</button>
+    </nav>
+  </header>
+
+  <main class="main-ticket">
+
+    
+    <div id="ticket-pdf" class="ticket">
+      <div class="ticket-header">
+        <img src="../img/the-evolution-of-gaming-identity-free-png.png" alt="Logo" width="60">
+        <h2>ArgenGaming</h2>
+        <p class="ticket-sub">Comprobante de compra</p>
+      </div>
+
+      <div class="ticket-info">
+        <p><span>Cliente:</span> <strong id="ticket-nombre"></strong></p>
+        <p><span>Fecha:</span> <strong id="ticket-fecha"></strong></p>
+      </div>
+
+      <table class="tabla-ticket">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cant.</th>
+            <th>Precio unit.</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-ticket"></tbody>
+      </table>
+
+      <div class="ticket-total">
+        <span>Total</span>
+        <strong id="ticket-total"></strong>
+      </div>
+
+      <p class="ticket-gracias">¡Gracias por tu compra!</p>
+    </div>
+
+    
+    <div class="ticket-botones">
+      <button class="btn-pdf" onclick="descargarPDF()">⬇️ Descargar PDF</button>
+      <button class="btn-salir" onclick="salir()">Salir</button>
+    </div>
+
+  </main>
+
+  <script src="js/datos.js"></script>
+  <script>
+    function renderTicket() {
+      aplicarTema();
+
+      const carrito = obtenerCarrito();
+      const nombre = localStorage.getItem("nombreUsuario") || "Cliente";
+      const fecha = new Date().toLocaleDateString("es-AR", {
+        day: "2-digit", month: "2-digit", year: "numeric",
+        hour: "2-digit", minute: "2-digit"
+      });
+
+      document.getElementById("ticket-nombre").textContent = nombre;
+      document.getElementById("ticket-fecha").textContent = fecha;
+
+      const tbody = document.getElementById("tbody-ticket");
+      let total = 0;
+
+      carrito.forEach(item => {
+        const subtotal = item.precio * item.cantidad;
+        total += subtotal;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.nombre}</td>
+          <td>${item.cantidad}</td>
+          <td>$${item.precio.toLocaleString("es-AR")}</td>
+          <td>$${subtotal.toLocaleString("es-AR")}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById("ticket-total").textContent = "$" + total.toLocaleString("es-AR");
+
+      const btn = document.getElementById("btn-tema");
+      const tema = localStorage.getItem("tema") || "oscuro";
+      btn.textContent = tema === "claro" ? "🌙 Oscuro" : "☀️ Claro";
+    }
+
+    function descargarPDF() {
+      const elemento = document.getElementById("ticket-pdf");
+      const nombre = localStorage.getItem("nombreUsuario") || "cliente";
+      const opciones = {
+        margin: 10,
+        filename: `ticket-${nombre}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, backgroundColor: "#ffffff" },
+        jsPDF: { unit: "mm", format: "a5", orientation: "portrait" }
+      };
+      html2pdf().set(opciones).from(elemento).save();
+    }
+
+    function salir() {
+      guardarCarrito([]);
+      localStorage.removeItem("nombreUsuario");
+      window.location.href = "index.html";
+    }
+
+    renderTicket();
+  </script>
+</body>
+</html>

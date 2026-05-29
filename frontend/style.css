@@ -31,6 +31,12 @@ header {
     letter-spacing: 1px;
 }
 
+nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
 nav ul {
     display: flex;
     gap: 20px;
@@ -126,6 +132,463 @@ main {
     color: #ff4757;
     font-size: 1.2rem;
 }
+
+
+.alumnos {
+  font-size: 0.75rem;
+  color: #aaa;
+  display: block;
+}
+
+
+.nav-carrito {
+  position: relative;
+}
+
+.badge {
+  background: #ff4757;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  margin-left: 4px;
+  font-weight: bold;
+}
+
+.btn-tema {
+  background: transparent;
+  border: 1px solid #ff4757;
+  color: #ff4757;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-tema:hover {
+  background: #ff4757;
+  color: white;
+}
+
+.btn-admin {
+  background: #ff4757;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-admin:hover {
+  background: #e0001b;
+}
+
+
+nav a.activo {
+  color: white;
+  border-bottom: 2px solid #ff4757;
+}
+
+
+.titulo-seccion {
+  font-size: 1.6rem;
+  border-left: 4px solid #ff4757;
+  padding-left: 12px;
+  margin-bottom: 10px;
+}
+
+/* ── Controles carrito en card ── */
+.controles-carrito {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 10px 0 6px;
+}
+
+.btn-menos, .btn-mas {
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 0.2s;
+}
+
+.btn-menos:disabled {
+  background: #555;
+  cursor: default;
+}
+
+.btn-mas:hover { background: #e0001b; }
+
+.cantidad {
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+.btn-agregar {
+  width: 100%;
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-agregar:hover { background: #e0001b; }
+
+/* ── Paginación ── */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.btn-pag {
+  background: #2a2a2a;
+  color: #ccc;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.btn-pag:hover { background: #ff4757; color: white; }
+.btn-pag.activa { background: #ff4757; color: white; border-color: #ff4757; }
+
+
+body.tema-claro {
+  background-color: #f0f0f0;
+  color: #111;
+}
+
+body.tema-claro header {
+  background-color: #222;
+}
+
+body.tema-claro .producto {
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+body.tema-claro .btn-pag {
+  background: #e0e0e0;
+  color: #333;
+  border-color: #bbb;
+}
+
+body.tema-claro .btn-menos:disabled {
+  background: #bbb;
+}
+
+
+.carrito-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 20px;
+  color: #aaa;
+  font-size: 1.1rem;
+}
+
+.btn-volver {
+  background: transparent;
+  border: 1px solid #ff4757;
+  color: #ff4757;
+  padding: 8px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-volver:hover {
+  background: #ff4757;
+  color: white;
+}
+
+
+.tabla-carrito {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tabla-carrito th {
+  background: #1a1a1a;
+  color: #ff4757;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tabla-carrito td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #2a2a2a;
+  vertical-align: middle;
+}
+
+.td-producto {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.img-carrito {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #111;
+}
+
+.btn-eliminar {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-eliminar:hover { transform: scale(1.2); }
+
+
+.carrito-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.total {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.total span { color: #ff4757; }
+
+.carrito-acciones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-confirmar {
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-confirmar:hover { background: #e0001b; }
+
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal h3 {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  color: #ff4757;
+}
+
+.modal p {
+  margin-bottom: 8px;
+  color: #ccc;
+}
+
+.modal-botones {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.btn-cancelar {
+  background: transparent;
+  border: 1px solid #555;
+  color: #ccc;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.btn-cancelar:hover { border-color: #ff4757; color: #ff4757; }
+
+
+body.tema-claro .tabla-carrito th { background: #222; }
+body.tema-claro .tabla-carrito td { border-color: #ddd; }
+body.tema-claro .modal { background: #fff; color: #111; }
+body.tema-claro .modal p { color: #444; }
+body.tema-claro .btn-cancelar { color: #333; border-color: #999; }
+
+
+.main-ticket {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.ticket {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 520px;
+  width: 100%;
+}
+
+.ticket-header {
+  text-align: center;
+  border-bottom: 2px dashed #ff4757;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.ticket-header h2 {
+  font-size: 1.6rem;
+  margin: 8px 0 4px;
+}
+
+.ticket-sub {
+  color: #aaa;
+  font-size: 0.85rem;
+}
+
+.ticket-info {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ticket-info p { font-size: 0.95rem; color: #ccc; }
+.ticket-info span { color: #aaa; }
+
+.tabla-ticket {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+.tabla-ticket th {
+  background: #111;
+  color: #ff4757;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+.tabla-ticket td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+
+.ticket-total {
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px dashed #ff4757;
+  padding-top: 14px;
+  font-size: 1.2rem;
+}
+
+.ticket-total strong { color: #ff4757; }
+
+.ticket-gracias {
+  text-align: center;
+  margin-top: 20px;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.ticket-botones {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-pdf {
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-pdf:hover { background: #e0001b; }
+
+.btn-salir {
+  background: transparent;
+  border: 1px solid #555;
+  color: #ccc;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-salir:hover { border-color: #ff4757; color: #ff4757; }
+
+
+body.tema-claro .ticket { background: #fff; border-color: #ddd; }
+body.tema-claro .ticket-info p { color: #333; }
+body.tema-claro .ticket-info span { color: #666; }
+body.tema-claro .tabla-ticket th { background: #222; }
+body.tema-claro .tabla-ticket td { color: #222; border-color: #eee; }
+body.tema-claro .btn-salir { color: #333; border-color: #999; }
 
 @media (max-width: 480px) {
     header {

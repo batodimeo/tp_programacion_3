@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Accesorios – ArgenGaming</title>
+</head>
+<body>
+  <header>
+    <div class="logo-area">
+      <img src="../img/the-evolution-of-gaming-identity-free-png.png" alt="ArgenGaming Logo" width="50">
+      <div>
+        <h1>ArgenGaming</h1>
+        <span class="alumnos">Bautista Di Meo &amp; Manuel Hulej &amp; Agustina Dominguez</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="juegos.html">Juegos</a></li>
+        <li><a href="accesorios.html" class="activo">Accesorios</a></li>
+        <li>
+          <a href="carrito.html" class="nav-carrito">
+            🛒 Carrito
+            <span id="carrito-badge" class="badge" style="display:none">0</span>
+          </a>
+        </li>
+      </ul>
+      <button id="btn-tema" class="btn-tema" onclick="toggleTema()">☀️ Claro</button>
+      <a href="../backend/views/login.ejs" class="btn-admin">Panel Admin</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2 class="titulo-seccion">🖱️ Accesorios</h2>
+
+    <div id="contenedor-productos" class="productos-container"></div>
+
+    <div class="paginacion" id="paginacion"></div>
+  </main>
+
+  <script src="js/datos.js"></script>
+  <script>
+    const POR_PAGINA = 4;
+    let paginaActual = 1;
+
+    function renderProductos() {
+      aplicarTema();
+      actualizarBadge();
+
+      const lista = productos.accesorios.filter(p => p.activo);
+      const totalPaginas = Math.ceil(lista.length / POR_PAGINA);
+      const inicio = (paginaActual - 1) * POR_PAGINA;
+      const pagina = lista.slice(inicio, inicio + POR_PAGINA);
+
+      const contenedor = document.getElementById("contenedor-productos");
+      contenedor.innerHTML = "";
+
+      pagina.forEach(p => {
+        const cantidad = cantidadEnCarrito(p.id);
+        const card = document.createElement("div");
+        card.className = "producto";
+        card.innerHTML = `
+          <img src="${p.imagen}" alt="${p.nombre}">
+          <h3>${p.nombre}</h3>
+          <p class="desc">${p.descripcion}</p>
+          <p class="precio">$${p.precio.toLocaleString("es-AR")}</p>
+          <div class="controles-carrito" style="display:${cantidad > 0 ? 'flex' : 'none'}">
+            <button class="btn-menos" onclick="restar(${p.id})" ${cantidad === 0 ? "disabled" : ""}>−</button>
+            <span class="cantidad" id="cant-${p.id}">${cantidad}</span>
+            <button class="btn-mas" onclick="sumar(${p.id})">+</button>
+          </div>
+          <button id="btn-agregar-${p.id}" class="btn-agregar" onclick="sumar(${p.id})" style="display:${cantidad > 0 ? 'none' : 'block'}">Agregar al carrito</button>
+        `;
+        contenedor.appendChild(card);
+      });
+
+      renderPaginacion(totalPaginas);
+
+      const btn = document.getElementById("btn-tema");
+      const tema = localStorage.getItem("tema") || "oscuro";
+      btn.textContent = tema === "claro" ? "🌙 Oscuro" : "☀️ Claro";
+    }
+
+    function sumar(id) {
+      agregarAlCarrito(id, "accesorios");
+      actualizarCantidadCard(id);
+    }
+
+    function restar(id) {
+      quitarDelCarrito(id);
+      actualizarCantidadCard(id);
+    }
+
+    function actualizarCantidadCard(id) {
+      const span = document.getElementById("cant-" + id);
+      if (!span) return;
+      const cant = cantidadEnCarrito(id);
+      span.textContent = cant;
+      span.closest(".controles-carrito").querySelector(".btn-menos").disabled = cant === 0;
+      const btnAgregar = document.getElementById("btn-agregar-" + id);
+      if (btnAgregar) btnAgregar.style.display = cant > 0 ? "none" : "block";
+      span.closest(".controles-carrito").style.display = cant > 0 ? "flex" : "none";
+    }
+
+    function renderPaginacion(total) {
+      const pag = document.getElementById("paginacion");
+      pag.innerHTML = "";
+      for (let i = 1; i <= total; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.className = "btn-pag" + (i === paginaActual ? " activa" : "");
+        btn.onclick = () => { paginaActual = i; renderProductos(); };
+        pag.appendChild(btn);
+      }
+    }
+
+    renderProductos();
+  </script>
+</body>
+</html>
