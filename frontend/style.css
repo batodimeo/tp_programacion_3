@@ -2,40 +2,341 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 header {
-    background-color: #333;
+    background-color: #1a1a1a;
     color: white;
-    padding: 20px;
-    align-items: center;
+    padding: 15px 5%;
     display: flex;
     justify-content: space-between;
-    font-family: Arial, sans-serif;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
 }
 
-nav {
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-area h1 {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #ff4757;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s;
+}
+
+.menu-toggle:hover {
+    color: #ffffff;
+}
+
+nav.nav-menu ul {
     display: flex;
     gap: 20px;
+    list-style: none;
+}
+
+nav a {
+    color: #ff4757; 
     text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #ffffff;
 }
 
 main {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-direction: column;
+    gap: 40px;
 }
 
-div.product {
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 200px;
+.mensaje-bienvenida {
+    text-align: center;
+    background: rgb(55, 61, 77);
+    color: white;
+    padding: 40px 20px;
+    border-radius: 8px;
+}
+
+.mensaje-bienvenida h2 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.featured-products h2 {
+    margin-bottom: 20px;
+    font-size: 23px;
+    border-bottom: 2px solid #ff4757;
+    padding-bottom: 5px;
+    display: flex;
     text-align: center;
 }
 
-main {
-    width: 100%;
-    margin-bottom: 20px;
+.productos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
 }
+
+.producto {
+    background-color: white;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.producto img {
+    max-width: 100%;
+    height: 180px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.producto h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.producto .desc {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.producto .precio {
+    font-weight: bold;
+    color: #ff4757;
+    font-size: 1.2rem;
+}
+
+/* ===== MEDIA QUERIES - RESPONSIVE DESIGN ===== */
+
+/* Tablets - 768px y superiores */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 3%;
+    }
+
+    .logo-area h1 {
+        font-size: 1.2rem;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    nav.nav-menu {
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #1a1a1a;
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    nav.nav-menu.active {
+        display: block;
+    }
+
+    nav.nav-menu ul {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav.nav-menu a {
+        display: block;
+        padding: 10px 0;
+    }
+
+    main {
+        padding: 30px 15px;
+        gap: 30px;
+    }
+
+    .mensaje-bienvenida {
+        padding: 30px 15px;
+    }
+
+    .mensaje-bienvenida h2 {
+        font-size: 1.5rem;
+    }
+
+    .mensaje-bienvenida p {
+        font-size: 1rem;
+    }
+
+    .featured-products h2 {
+        font-size: 1.5rem;
+    }
+
+    .productos-container {
+        gap: 15px;
+    }
+
+    .producto {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Celulares - hasta 480px */
+@media (max-width: 480px) {
+    header {
+        padding: 12px 3%;
+        position: relative;
+    }
+
+    .logo-area {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .logo-area img {
+        width: 40px;
+    }
+
+    .logo-area h1 {
+        font-size: 1rem;
+    }
+
+    .menu-toggle {
+        font-size: 1.3rem;
+        padding: 5px;
+    }
+
+    nav.nav-menu {
+        top: 55px;
+        padding: 15px;
+    }
+
+    nav.nav-menu ul {
+        gap: 10px;
+    }
+
+    nav.nav-menu a {
+        padding: 8px 0;
+        font-size: 0.95rem;
+    }
+
+    main {
+        padding: 20px 10px;
+        gap: 20px;
+    }
+
+    .mensaje-bienvenida {
+        padding: 20px 15px;
+        border-radius: 6px;
+    }
+
+    .mensaje-bienvenida h2 {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+    }
+
+    .mensaje-bienvenida p {
+        font-size: 0.9rem;
+    }
+
+    .featured-products h2 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .productos-container {
+        gap: 12px;
+        flex-direction: column;
+    }
+
+    .producto {
+        width: 100%;
+        max-width: none;
+        padding: 15px;
+    }
+
+    .producto img {
+        height: 150px;
+    }
+
+    .producto h3 {
+        font-size: 1rem;
+    }
+
+    .producto .desc {
+        font-size: 0.85rem;
+    }
+
+    .producto .precio {
+        font-size: 1.1rem;
+    }
+}
+
+/* Celulares muy pequeños - hasta 360px */
+@media (max-width: 360px) {
+    .logo-area h1 {
+        font-size: 0.9rem;
+    }
+
+    .mensaje-bienvenida h2 {
+        font-size: 1.1rem;
+    }
+
+    .featured-products h2 {
+        font-size: 1.1rem;
+    }
+
+    .producto {
+        padding: 12px;
+    }
+
+    .producto img {
+        height: 120px;
+        margin-bottom: 10px;
+    }
+
+    .producto h3 {
+        font-size: 0.95rem;
+        margin-bottom: 5px;
+    }
+
+    .producto .desc {
+        font-size: 0.8rem;
+    }
+}
+
