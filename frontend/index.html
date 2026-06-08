@@ -1,61 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>ArgenGaming</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="../img/the-evolution-of-gaming-identity-free-png.png">
+  <title>ArgenGaming – Bienvenido</title>
 </head>
 <body>
-    <header>
-        <div class="logo-area">
-            <img src="/img/the-evolution-of-gaming-identity-free-png.png" alt="ArgenGaming Logo" width="50">
-            <h1><a href="/frontend/index.html">ArgenGaming</a></h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="juegos.html">Juegos</a></li>
-                <li><a href="accesorios.html">Accesorios</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main>
-        <section class="mensaje-bienvenida">
-            <h2>Bienvenido a ArgenGaming</h2>
-            <p>Tu tienda de videojuegos y accesorios en Argentina.</p>
-        </section>
+  <header>
+    <div class="logo-area">
+      <img src="../img/the-evolution-of-gaming-identity-free-png.png" alt="ArgenGaming Logo" width="50">
+      <h1>ArgenGaming</h1>
+    </div>
+    <nav>
+      <button id="btn-tema" class="btn-tema" onclick="toggleTema()">Claro</button>
+      <a href="http://localhost:3000/admin/login" class="btn-admin">Panel Admin</a>
+    </nav>
+  </header>
 
-        <section class="featured-products">
-            <h2>Productos Destacados</h2>
-            <div class="productos-container">
-                <div class="producto">
-                    <img src="/img/D_Q_NP_2X_826756-MLA96111126839_102025-V.webp" alt="Teclado Redragon">
-                    <h3>Teclado Redragon</h3>
-                    <p class="desc">Teclado mecánico RGB</p>
-                    <p class="precio">Precio: $59.999</p>
-                </div>
+  <main>
+    <div class="bienvenida-container">
 
-                <div class="producto">
-                    <img src="/img/D_Q_NP_2X_684258-MLA89309049368_082025-V.webp" alt="Mouse Redragon">
-                    <h3>Mouse Redragon</h3>
-                    <p class="desc">Mouse gamer ergonómico</p>
-                    <p class="precio">Precio: $49.999</p>
-                </div>
+      <div class="bienvenida-hero">
+        <img src="../img/the-evolution-of-gaming-identity-free-png.png" alt="Logo ArgenGaming" class="bienvenida-logo">
+        <h2>Bienvenido a <span>ArgenGaming</span></h2>
+        <p>Juegos y accesorios gamer al mejor precio de Argentina.</p>
+      </div>
 
-                <div class="producto">
-                    <img src="/img/D_Q_NP_2X_644614-MLA85015952151_052025-V.webp" alt="Auriculares Razer">
-                    <h3>Auriculares Razer</h3>
-                    <p class="desc">Sonido surround 7.1</p>
-                    <p class="precio">Precio: $79.999</p>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 ArgenGaming. Todos los derechos reservados.</p>
-        <p>Desarrollado por Bautista Di Meo, Manuel Hulej y Agustina Dominguez.</p>
-        <p>Contacto: info@argengaming.com</p>
-    </footer>
+      <div class="bienvenida-form">
+        <label for="input-nombre">¿Cómo te llamás?</label>
+        <input
+          type="text"
+          id="input-nombre"
+          placeholder="Ingresá tu nombre"
+          maxlength="40"
+          autocomplete="off"
+        >
+        <!-- Mensaje de error, oculto por defecto -->
+        <span class="error-msg" id="error-nombre">Por favor ingresá tu nombre para continuar.</span>
+        <button class="btn-continuar" onclick="continuar()">Continuar</button>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-nombres">Bautista Di Meo &mdash; Manuel Hulej &mdash; Agustina Dominguez</p>
+    <p class="footer-copy">ArgenGaming &copy; 2025 &mdash; Programación III &mdash; UTN Avellaneda</p>
+  </footer>
+
+  <script src="js/datos.js"></script>
+  <script>
+    // Aplicar tema guardado al cargar
+    aplicarTema();
+    actualizarBotonTema();
+
+    // Permitir continuar también con Enter
+    document.getElementById("input-nombre").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") continuar();
+    });
+
+    // Limpiar error al escribir
+    document.getElementById("input-nombre").addEventListener("input", function() {
+      document.getElementById("error-nombre").style.display = "none";
+    });
+
+    function continuar() {
+      const input = document.getElementById("input-nombre");
+      const nombre = input.value.trim();
+
+      if (nombre === "") {
+        document.getElementById("error-nombre").style.display = "block";
+        input.focus();
+        return;
+      }
+
+      // Guardar nombre y limpiar carrito previo antes de empezar
+      localStorage.setItem("nombreUsuario", nombre);
+      guardarCarrito([]);
+
+      window.location.href = "juegos.html";
+    }
+
+    function actualizarBotonTema() {
+      const tema = localStorage.getItem("tema") || "oscuro";
+      const btn = document.getElementById("btn-tema");
+      if (btn) btn.textContent = tema === "claro" ? "Oscuro" : "Claro";
+    }
+  </script>
+
 </body>
 </html>
