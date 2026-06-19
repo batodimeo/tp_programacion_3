@@ -117,7 +117,8 @@
       }
     }
 
-    renderProductos();
+    // Primero carga los productos desde la API, después renderiza
+    cargarProductos().then(() => renderProductos());
   </script>
 </body>
 </html>

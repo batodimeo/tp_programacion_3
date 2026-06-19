@@ -311,6 +311,19 @@ main {
   width: 240px;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+/* La descripción crece para ocupar el espacio sobrante */
+.producto .desc {
+  flex: 1;
+}
+
+/* El botón y los controles siempre al fondo de la card */
+.producto .btn-agregar,
+.producto .controles-carrito {
+  margin-top: auto;
 }
 
 .producto:hover {
