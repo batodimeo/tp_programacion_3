@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Producto – ArgenGaming Admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: sans-serif; background: #131315; color: #fff; margin: 0; }
+    header { background: #1e1e20; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a2c; }
+    header h1 { color: #00dbe9; margin: 0; font-size: 1.3rem; }
+    header nav a { color: #aaa; text-decoration: none; font-size: 0.9rem; margin-left: 1rem; }
+    header nav a:hover { color: #fff; }
+    main { padding: 2rem; max-width: 500px; }
+    h2 { color: #00dbe9; margin-bottom: 1.5rem; }
+    label { display: block; margin-bottom: 0.3rem; color: #aaa; font-size: 0.9rem; }
+    input, select { width: 100%; padding: 0.6rem; margin-bottom: 1.2rem; border-radius: 6px; border: 1px solid #333; background: #2a2a2c; color: #fff; font-size: 0.95rem; }
+    .btn-guardar  { padding: 0.7rem 1.5rem; background: #00dbe9; border: none; border-radius: 6px; color: #131315; font-weight: bold; cursor: pointer; }
+    .btn-cancelar { padding: 0.7rem 1.5rem; background: transparent; border: 1px solid #444; border-radius: 6px; color: #aaa; cursor: pointer; margin-left: 0.5rem; text-decoration: none; }
+    .btn-guardar:hover  { opacity: 0.85; }
+    .btn-cancelar:hover { color: #fff; border-color: #aaa; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ArgenGaming — Panel Admin</h1>
+    <nav>
+      <a href="/admin/dashboard">Dashboard</a>
+      <a href="/admin/productos">Productos</a>
+      <a href="/admin/logout">Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Editar producto</h2>
+
+    <form method="POST" action="/admin/productos/editar/<%= producto.id %>">
+
+      <label>Nombre</label>
+      <input type="text" name="nombre" value="<%= producto.nombre %>" required>
+
+      <label>Descripción</label>
+      <input type="text" name="descripcion" value="<%= producto.descripcion %>" required>
+
+      <label>Precio</label>
+      <input type="number" name="precio" value="<%= producto.precio %>" min="0" step="0.01" required>
+
+      <div style="margin-top: 0.5rem;">
+        <button type="submit" class="btn-guardar">Guardar cambios</button>
+        <a href="/admin/productos" class="btn-cancelar">Cancelar</a>
+      </div>
+
+    </form>
+  </main>
+
+</body>
+</html>

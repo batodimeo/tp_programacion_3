@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const session = require("express-session");
 const iniciarDB = require("./database");
 
 const app = express();
@@ -13,6 +14,13 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+
+// Sesiones
+app.use(session({
+  secret: "argengaming_secreto",
+  resave: false,
+  saveUninitialized: false
+}));
 
 // Rutas
 const productosRouter = require("./routes/productos");

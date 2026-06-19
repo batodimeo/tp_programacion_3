@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ventas – ArgenGaming Admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: sans-serif; background: #131315; color: #fff; margin: 0; }
+    header { background: #1e1e20; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a2c; }
+    header h1 { color: #00dbe9; margin: 0; font-size: 1.3rem; }
+    header nav a { color: #aaa; text-decoration: none; font-size: 0.9rem; margin-left: 1rem; }
+    header nav a:hover { color: #fff; }
+    main { padding: 2rem; }
+    h2 { color: #00dbe9; margin-bottom: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; background: #1e1e20; border-radius: 10px; overflow: hidden; }
+    th { background: #2a2a2c; padding: 0.8rem 1rem; text-align: left; font-size: 0.85rem; color: #aaa; text-transform: uppercase; }
+    td { padding: 0.8rem 1rem; border-bottom: 1px solid #2a2a2c; font-size: 0.95rem; }
+    tr:last-child td { border-bottom: none; }
+    .btn-ver { padding: 0.4rem 0.9rem; background: #00dbe9; color: #131315; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; text-decoration: none; }
+    .btn-ver:hover { opacity: 0.85; }
+    .sin-ventas { color: #aaa; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ArgenGaming — Panel Admin</h1>
+    <nav>
+      <a href="/admin/dashboard">Dashboard</a>
+      <a href="/admin/productos">Productos</a>
+      <a href="/admin/logout">Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Historial de ventas</h2>
+
+    <% if (ventas.length === 0) { %>
+      <p class="sin-ventas">Todavía no hay ventas registradas.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Fecha</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% ventas.forEach(v => { %>
+          <tr>
+            <td><%= v.id %></td>
+            <td><%= v.nombreCliente %></td>
+            <td>$<%= v.total.toLocaleString("es-AR") %></td>
+            <td><%= new Date(v.createdAt).toLocaleDateString("es-AR", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" }) %></td>
+            <td><a href="/admin/ventas/<%= v.id %>" class="btn-ver">Ver detalle</a></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </main>
+
+</body>
+</html>

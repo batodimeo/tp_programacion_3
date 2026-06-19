@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard – ArgenGaming Admin</title>
+  <style>
+    body { font-family: sans-serif; background: #131315; color: #fff; margin: 0; }
+    header { background: #1e1e20; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a2c; }
+    header h1 { color: #00dbe9; margin: 0; font-size: 1.3rem; }
+    header a { color: #aaa; text-decoration: none; font-size: 0.9rem; }
+    header a:hover { color: #fff; }
+    main { padding: 2rem; }
+    h2 { color: #00dbe9; }
+    .cards { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .card { background: #1e1e20; border-radius: 10px; padding: 1.5rem 2rem; flex: 1; border: 1px solid #2a2a2c; }
+    .card h3 { margin: 0 0 0.5rem; color: #aaa; font-size: 0.9rem; text-transform: uppercase; }
+    .card a { display: inline-block; margin-top: 1rem; color: #00dbe9; text-decoration: none; font-size: 0.9rem; }
+    .card a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ArgenGaming — Panel Admin</h1>
+    <span>Hola, <strong><%= email %></strong> &nbsp;|&nbsp; <a href="/admin/logout">Cerrar sesión</a></span>
+  </header>
+
+  <main>
+    <h2>Dashboard</h2>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Productos</h3>
+        <p>Ver, agregar y editar productos del catálogo.</p>
+        <a href="/admin/productos">Ir a productos</a>
+      </div>
+      <div class="card">
+        <h3>Ventas</h3>
+        <p>Ver el historial de compras realizadas.</p>
+        <a href="/admin/ventas">Ir a ventas</a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
