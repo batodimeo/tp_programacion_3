@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin – ArgenGaming</title>
+  <style>
+    body { font-family: sans-serif; background: #131315; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .card { background: #1e1e20; padding: 2rem; border-radius: 12px; width: 320px; }
+    h2 { margin-bottom: 1.5rem; color: #00dbe9; }
+    input { width: 100%; padding: 0.6rem; margin-bottom: 1rem; border-radius: 6px; border: 1px solid #333; background: #2a2a2c; color: #fff; box-sizing: border-box; }
+    button { width: 100%; padding: 0.7rem; background: #00dbe9; border: none; border-radius: 6px; color: #131315; font-weight: bold; cursor: pointer; }
+    .error { color: #ff4d4d; margin-bottom: 1rem; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Panel Admin</h2>
+    <% if (error) { %>
+      <p class="error"><%= error %></p>
+    <% } %>
+    <form method="POST" action="/admin/login">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <button type="submit">Ingresar</button>
+    </form>
+  </div>
+</body>
+</html>
