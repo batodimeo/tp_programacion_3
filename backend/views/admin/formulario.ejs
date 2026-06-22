@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/png" href="/img/the-evolution-of-gaming-identity-free-png.png">
+  <title><%= producto ? 'Modificar Producto' : 'Nuevo Producto' %> – ArgenGaming</title>
+</head>
+<body class="tema-oscuro">
+
+  <header>
+    <div class="logo-area">
+      <img src="/img/the-evolution-of-gaming-identity-free-png.png" alt="Logo" width="50">
+      <h1>ArgenGaming <span>[Panel de Control]</span></h1>
+    </div>
+    <nav>
+      <a href="/admin/dashboard" class="btn-volver">Volver al Dashboard</a>
+    </nav>
+  </header>
+
+  <main style="display: flex; justify-content: center; align-items: center; min-height: 75vh; padding: 20px;">
+    <div class="modal" style="width: 100%; max-width: 500px; padding: 36px; position: static;">
+      
+      <h2 style="font-family: 'Sora', sans-serif; color: #dbfcff; font-size: 1.4rem; margin-bottom: 24px;">
+        <%= producto ? 'Modificar Producto #' + producto.id : 'Registrar Nuevo Producto' %>
+      </h2>
+
+      <form action="<%= producto ? '/admin/productos/editar/' + producto.id : '/admin/productos/nuevo' %>" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 16px; text-align: left;">
+        
+        <div>
+          <label for="nombre" style="font-size: 0.75rem; color: #849495; text-transform: uppercase;">Nombre del Producto</label>
+          <input type="text" id="nombre" name="nombre" value="<%= producto ? producto.nombre : '' %>" required style="width: 100%; background: #131315; border: 1px solid #3b494b; padding: 10px; color: #e5e1e4; margin-top: 4px; border-radius: 4px;">
+        </div>
+
+        <div style="display: flex; gap: 16px;">
+          <div style="flex: 1;">
+            <label for="precio" style="font-size: 0.75rem; color: #849495; text-transform: uppercase;">Precio ($)</label>
+            <input type="number" step="0.01" id="precio" name="precio" value="<%= producto ? producto.precio : '' %>" required style="width: 100%; background: #131315; border: 1px solid #3b494b; padding: 10px; color: #e5e1e4; margin-top: 4px; border-radius: 4px;">
+          </div>
+
+          <div style="flex: 1;">
+            <label for="categoria" style="font-size: 0.75rem; color: #849495; text-transform: uppercase;">Categoría</label>
+            <select id="categoria" name="categoria" required style="width: 100%; background: #131315; border: 1px solid #3b494b; padding: 10px; color: #e5e1e4; margin-top: 4px; border-radius: 4px;">
+              <option value="juegos" <%= (producto && producto.categoria === 'juegos') ? 'selected' : '' %>>Juegos</option>
+              <option value="accesorios" <%= (producto && producto.categoria === 'accesorios') ? 'selected' : '' %>>Accesorios</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="imagen" style="font-size: 0.75rem; color: #849495; text-transform: uppercase;">Imagen (PNG / JPG)</label>
+          <input type="file" id="imagen" name="imagen" accept="image/*" <%= producto ? '' : 'required' %> style="width: 100%; background: #131315; border: 1px solid #3b494b; padding: 8px; color: #e5e1e4; margin-top: 4px; border-radius: 4px;">
+          
+          <% if (producto && producto.imagen) { %>
+            <p style="font-size: 0.75rem; color: #849495; margin-top: 6px;">Archivo actual: <b style="color:#dbfcff;"><%= producto.imagen %></b> (Subir otra solo si querés reemplazarla)</p>
+          <% } %>
+        </div>
+
+        <button type="submit" class="btn-continuar" style="margin-top: 12px;">
+          <%= producto ? 'Guardar Modificación' : 'Crear Producto' %>
+        </button>
+
+      </form>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-nombres">Bautista Di Meo &mdash; Manuel Hulej &mdash; Agustina Dominguez</p>
+    <p class="footer-copy">ArgenGaming &copy; 2026 &mdash; Programación III &mdash; UTN Avellaneda</p>
+  </footer>
+
+</body>
+</html>
