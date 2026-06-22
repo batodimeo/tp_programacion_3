@@ -4,42 +4,31 @@ const db = require('../models/database');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs'); // <-- AGREGAMOS ESTE MÓDULO NATIVO DE NODE
+const fs = require('fs');
+const XLSX = require('xlsx'); // <-- 1. LIBRERÍA DE EXCEL AGREGADA
 
-// ==========================================
-// CONFIGURACIÓN DE MULTER (CON AUTOCREACIÓN DE CARPETA)
-// ==========================================
+// Configuración de Multer (Imágenes)
 const dirImagen = path.join(__dirname, '../public/img');
-
-// Magia: Si la carpeta 'img' no existe, Node la crea automáticamente en este instante
 if (!fs.existsSync(dirImagen)) {
     fs.mkdirSync(dirImagen, { recursive: true });
 }
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, dirImagen);
-    },
-    filename: (req, file, cb) => {
-        const nombreLimpio = Date.now() + '-' + file.originalname.replace(/\s+/g, '-');
-        cb(null, nombreLimpio);
-    }
+    destination: (req, file, cb) => cb(null, dirImagen),
+    filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname.replace(/\s+/g, '-'))
 });
 const upload = multer({ storage });
+
 
 // ==========================================
 // 1. AUTENTICACIÓN
 // ==========================================
-router.get('/login', (req, res) => {
-    res.render('admin/login', { error: null });
-});
+router.get('/login', (req, res) => res.render('admin/login', { error: null }));
 
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
     db.get("SELECT * FROM usuarios WHERE email = ?", [email], (err, usuario) => {
-        if (err || !usuario) {
-            return res.render('admin/login', { error: 'Correo no encontrado.' });
-        }
+        if (err || !usuario) return res.render('admin/login', { error: 'Correo no encontrado.' });
         if (bcrypt.compareSync(password, usuario.password)) {
             req.session.adminLogueado = true;
             req.session.adminEmail = usuario.email;
@@ -57,94 +46,122 @@ router.get('/logout', (req, res) => {
 
 
 // ==========================================
-// 2. DASHBOARD Y ESTADO
+// 2. DASHBOARD (CON PRODUCTOS Y VENTAS)
 // ==========================================
 router.get('/dashboard', (req, res) => {
     if (!req.session.adminLogueado) return res.redirect('/admin/login');
 
+    // Hacemos dos consultas: los productos por un lado, y las ventas por el otro
     db.all("SELECT * FROM productos", [], (err, productos) => {
-        res.render('admin/dashboard', { 
-            emailAdmin: req.session.adminEmail,
-            productos: productos || []
+        db.all("SELECT * FROM ventas ORDER BY id DESC", [], (err, ventas) => {
+            res.render('admin/dashboard', { 
+                emailAdmin: req.session.adminEmail,
+                productos: productos || [],
+                ventas: ventas || []
+            });
         });
     });
 });
 
 router.post('/productos/estado/:id', (req, res) => {
     if (!req.session.adminLogueado) return res.redirect('/admin/login');
-
     db.get("SELECT activo FROM productos WHERE id = ?", [req.params.id], (err, prod) => {
         if (prod) {
             const nuevoEstado = prod.activo === 1 ? 0 : 1;
-            db.run("UPDATE productos SET activo = ? WHERE id = ?", [nuevoEstado, req.params.id], () => {
-                res.redirect('/admin/dashboard');
-            });
-        } else {
-            res.redirect('/admin/dashboard');
-        }
+            db.run("UPDATE productos SET activo = ? WHERE id = ?", [nuevoEstado, req.params.id], () => res.redirect('/admin/dashboard'));
+        } else res.redirect('/admin/dashboard');
     });
 });
 
 
 // ==========================================
-// 3. ALTA DE PRODUCTO
+// 3. EXCEL DE VENTAS (REQUISITO PROFESORES)
 // ==========================================
-// GET: Mostrar formulario vacío
+router.get('/ventas/excel', (req, res) => {
+    if (!req.session.adminLogueado) return res.redirect('/admin/login');
+
+    const sqlExcel = `
+        SELECT 
+            v.id AS "N° Ticket", 
+            v.cliente AS "Cliente", 
+            v.fecha AS "Fecha", 
+            p.nombre AS "Producto Comprado", 
+            vp.cantidad AS "Cantidad", 
+            vp.precio_unitario AS "Precio Unit.", 
+            (vp.cantidad * vp.precio_unitario) AS "Subtotal"
+        FROM ventas v
+        JOIN ventas_productos vp ON v.id = vp.venta_id
+        JOIN productos p ON vp.producto_id = p.id
+        ORDER BY v.id DESC
+    `;
+
+    db.all(sqlExcel, [], (err, filas) => {
+        if (err || !filas || filas.length === 0) {
+            return res.send('<script>alert("No hay ninguna venta registrada para exportar."); window.location.href="/admin/dashboard";</script>');
+        }
+
+        // Magia: convierte el resultado de SQL a una hoja de Excel real
+        const worksheet = XLSX.utils.json_to_sheet(filas);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Reporte de Ventas");
+
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
+
+        res.setHeader('Content-Disposition', 'attachment; filename="Reporte_Ventas_ArgenGaming.xlsx"');
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.send(excelBuffer);
+    });
+});
+
+
+// ==========================================
+// 4. ALTAS Y MODIFICACIONES
+// ==========================================
 router.get('/productos/nuevo', (req, res) => {
     if (!req.session.adminLogueado) return res.redirect('/admin/login');
     res.render('admin/formulario', { producto: null });
 });
 
-// POST: Recibir datos e imagen del nuevo producto
 router.post('/productos/nuevo', upload.single('imagen'), (req, res) => {
     if (!req.session.adminLogueado) return res.redirect('/admin/login');
-
-    const { nombre, precio, categoria } = req.body;
+    
+    // 1. INYECTAMOS 'descripcion' EN LA DESESTRUCTURACIÓN
+    const { nombre, descripcion, precio, categoria } = req.body; 
     const imagen = req.file ? req.file.filename : 'sin-imagen.png';
 
+    // 2. AGREGAMOS EL CAMPO AL INSERT DE SQL
     db.run(
-        "INSERT INTO productos (nombre, precio, categoria, imagen, activo) VALUES (?, ?, ?, ?, 1)",
-        [nombre, precio, categoria, imagen],
-        (err) => {
-            if (err) console.error(err);
-            res.redirect('/admin/dashboard');
-        }
+        "INSERT INTO productos (nombre, descripcion, precio, categoria, imagen, activo) VALUES (?, ?, ?, ?, ?, 1)", 
+        [nombre, descripcion, precio, categoria, imagen], 
+        () => res.redirect('/admin/dashboard')
     );
 });
 
-
-// ==========================================
-// 4. MODIFICACIÓN DE PRODUCTO
-// ==========================================
-// GET: Mostrar formulario lleno con los datos del ID
 router.get('/productos/editar/:id', (req, res) => {
     if (!req.session.adminLogueado) return res.redirect('/admin/login');
-
     db.get("SELECT * FROM productos WHERE id = ?", [req.params.id], (err, producto) => {
         if (!producto) return res.redirect('/admin/dashboard');
         res.render('admin/formulario', { producto });
     });
 });
 
-// POST: Impactar los cambios en SQLite
 router.post('/productos/editar/:id', upload.single('imagen'), (req, res) => {
     if (!req.session.adminLogueado) return res.redirect('/admin/login');
-
-    const { nombre, precio, categoria } = req.body;
+    
+    // 3. INYECTAMOS 'descripcion' TAMBIÉN EN LA EDICIÓN
+    const { nombre, descripcion, precio, categoria } = req.body; 
     const { id } = req.params;
 
     if (req.file) {
-        // Si el usuario subió una foto nueva, actualizamos el campo imagen
         db.run(
-            "UPDATE productos SET nombre = ?, precio = ?, categoria = ?, imagen = ? WHERE id = ?",
-            [nombre, precio, categoria, req.file.filename, id],
+            "UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, categoria = ?, imagen = ? WHERE id = ?", 
+            [nombre, descripcion, precio, categoria, req.file.filename, id], 
             () => res.redirect('/admin/dashboard')
         );
     } else {
-        // Si NO subió foto, actualizamos los textos pero le dejamos la imagen que ya tenía
         db.run(
-            "UPDATE productos SET nombre = ?, precio = ?, categoria = ? WHERE id = ?",
-            [nombre, precio, categoria, id],
+            "UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, categoria = ? WHERE id = ?", 
+            [nombre, descripcion, precio, categoria, id], 
             () => res.redirect('/admin/dashboard')
         );
     }

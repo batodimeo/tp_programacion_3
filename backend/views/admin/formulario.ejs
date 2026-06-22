@@ -28,10 +28,19 @@
 
       <form action="<%= producto ? '/admin/productos/editar/' + producto.id : '/admin/productos/nuevo' %>" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 16px; text-align: left;">
         
+        <!-- Bloque del Nombre que ya tenías -->
         <div>
           <label for="nombre" style="font-size: 0.75rem; color: #849495; text-transform: uppercase;">Nombre del Producto</label>
           <input type="text" id="nombre" name="nombre" value="<%= producto ? producto.nombre : '' %>" required style="width: 100%; background: #131315; border: 1px solid #3b494b; padding: 10px; color: #e5e1e4; margin-top: 4px; border-radius: 4px;">
         </div>
+
+        <!-- Bloque de la Descripción nuevo -->
+        <div style="margin-top: 15px;">
+          <label for="descripcion" style="font-size: 0.75rem; color: #849495; text-transform: uppercase;">Descripción</label>
+          <textarea id="descripcion" name="descripcion" rows="3" required style="width: 100%; background: #131315; border: 1px solid #3b494b; padding: 10px; color: #e5e1e4; margin-top: 4px; border-radius: 4px;"><%= producto ? producto.descripcion : '' %></textarea>
+        </div>
+
+        
 
         <div style="display: flex; gap: 16px;">
           <div style="flex: 1;">

@@ -5,13 +5,19 @@ const db = require('../models/database');
 // ========================================================
 // 1. GET: Devolver catálogo de productos activos al Front
 // ========================================================
+// GET: Devolver catálogo de productos activos al Front con rutas de imagen absolutas
 router.get('/productos', (req, res) => {
     db.all("SELECT * FROM productos WHERE activo = 1", [], (err, filas) => {
         if (err) return res.status(500).json({ error: "Error de DB" });
-        res.json(filas);
+
+        const productosListos = filas.map(p => ({
+            ...p,
+            imagen: `http://localhost:3000/img/${p.imagen}`
+        }));
+
+        res.json(productosListos);
     });
 });
-
 // ========================================================
 // 2. POST: Recibir el carrito y guardar la Venta (N:M)
 // ========================================================
@@ -86,5 +92,4 @@ router.get('/ventas/:id', (req, res) => {
     });
 });
 
-// ¡ESTA ES LA LÍNEA MÁGICA QUE SE TE HABÍA BORRADO!
 module.exports = router;

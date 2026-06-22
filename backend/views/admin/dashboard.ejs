@@ -141,6 +141,39 @@
       </tbody>
     </table>
 
+<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #3b494b; margin-top: 48px; padding-bottom: 8px;">
+      <h3 style="font-family: 'Sora', sans-serif; color: #dbfcff;">Registro de Ventas Realizadas</h3>
+      
+      <a href="/admin/ventas/excel" class="btn-continuar" style="background-color: #107c41; color: #ffffff; font-size: 0.85rem; border: none; padding: 8px 16px;">
+        📊 Descargar Reporte en Excel
+      </a>
+    </div>
+
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>N° Ticket</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Ingreso Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (typeof ventas === 'undefined' || ventas.length === 0) { %>
+          <tr><td colspan="4" style="color: #849495; text-align: center;">Todavía no se registraron compras en la tienda.</td></tr>
+        <% } else { %>
+          <% ventas.forEach(v => { %>
+            <tr>
+              <td>#<%= v.id %></td>
+              <td><%= v.cliente %></td>
+              <td><%= v.fecha %></td>
+              <td style="color: #c3f400; font-weight: bold;">$<%= v.total.toLocaleString('es-AR') %></td>
+            </tr>
+          <% }); %>
+        <% } %>
+      </tbody>
+    </table>
+
   </main>
 
   <footer class="footer">
