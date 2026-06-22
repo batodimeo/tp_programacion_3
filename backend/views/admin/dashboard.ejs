@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/png" href="/img/the-evolution-of-gaming-identity-free-png.png">
+  <title>Dashboard Administrador – ArgenGaming</title>
+  <style>
+    .tabla-admin {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      margin-bottom: 32px;
+      background-color: #131315;
+    }
+    .tabla-admin th, .tabla-admin td {
+      border: 1px solid #3b494b;
+      padding: 12px;
+      text-align: left;
+    }
+    .tabla-admin th {
+      background-color: #1c1c1f;
+      color: #dbfcff;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+    .estado-activo { color: #c3f400; }
+    .estado-inactivo { color: #ffb4ab; }
+    .btn-accion {
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-right: 8px;
+    }
+    .btn-editar { background-color: #3b494b; color: #e5e1e4; border: 1px solid #526365; }
+    .btn-estado { background-color: #1c1c1f; color: #e5e1e4; border: 1px solid #3b494b; }
+  </style>
+</head>
+<body class="tema-oscuro">
+
+  <header>
+    <div class="logo-area">
+      <img src="/img/the-evolution-of-gaming-identity-free-png.png" alt="Logo" width="50">
+      <h1>ArgenGaming <span>[Panel de Control]</span></h1>
+    </div>
+    <nav>
+      <a href="/admin/productos/nuevo" class="btn-continuar" style="font-size: 0.9rem; padding: 8px 16px;">+ Nuevo Producto</a>
+      <a href="/admin/logout" class="btn-volver" style="margin-left: 10px;">Cerrar Sesión</a>
+    </nav>
+  </header>
+
+  <main style="padding: 40px; max-width: 1200px; margin: 0 auto;">
+    
+    <div style="margin-bottom: 32px;">
+      <h2 style="font-family: 'Sora', sans-serif; color: #dbfcff;">Panel de Administración</h2>
+      <p style="color: #849495;">Bienvenido, <%= emailAdmin %></p>
+    </div>
+
+    <h3 style="font-family: 'Sora', sans-serif; color: #dbfcff; border-bottom: 1px solid #3b494b; padding-bottom: 8px;">Categoría: Juegos</h3>
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% let juegos = productos.filter(p => p.categoria === 'juegos'); %>
+        <% if (juegos.length === 0) { %>
+          <tr><td colspan="6" style="color: #849495; text-align: center;">No hay juegos registrados.</td></tr>
+        <% } else { %>
+          <% juegos.forEach(prod => { %>
+            <tr>
+              <td>#<%= prod.id %></td>
+              <td><img src="/img/<%= prod.imagen %>" alt="<%= prod.nombre %>" width="40" style="border-radius: 4px;"></td>
+              <td><%= prod.nombre %></td>
+              <td>$<%= prod.precio.toLocaleString('es-AR') %></td>
+              <td class="<%= prod.activo === 1 ? 'estado-activo' : 'estado-inactivo' %>">
+                <%= prod.activo === 1 ? 'Activo' : 'Inactivo' %>
+              </td>
+              <td>
+                <a href="/admin/productos/editar/<%= prod.id %>" class="btn-accion btn-editar">Modificar</a>
+                <form action="/admin/productos/estado/<%= prod.id %>" method="POST" style="display:inline;">
+                  <button type="submit" class="btn-accion btn-estado">
+                    <%= prod.activo === 1 ? 'Desactivar' : 'Activar' %>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        <% } %>
+      </tbody>
+    </table>
+
+    <h3 style="font-family: 'Sora', sans-serif; color: #dbfcff; border-bottom: 1px solid #3b494b; padding-bottom: 8px;">Categoría: Accesorios</h3>
+    <table class="tabla-admin">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% let accesorios = productos.filter(p => p.categoria === 'accesorios'); %>
+        <% if (accesorios.length === 0) { %>
+          <tr><td colspan="6" style="color: #849495; text-align: center;">No hay accesorios registrados.</td></tr>
+        <% } else { %>
+          <% accesorios.forEach(prod => { %>
+            <tr>
+              <td>#<%= prod.id %></td>
+              <td><img src="/img/<%= prod.imagen %>" alt="<%= prod.nombre %>" width="40" style="border-radius: 4px;"></td>
+              <td><%= prod.nombre %></td>
+              <td>$<%= prod.precio.toLocaleString('es-AR') %></td>
+              <td class="<%= prod.activo === 1 ? 'estado-activo' : 'estado-inactivo' %>">
+                <%= prod.activo === 1 ? 'Activo' : 'Inactivo' %>
+              </td>
+              <td>
+                <a href="/admin/productos/editar/<%= prod.id %>" class="btn-accion btn-editar">Modificar</a>
+                <form action="/admin/productos/estado/<%= prod.id %>" method="POST" style="display:inline;">
+                  <button type="submit" class="btn-accion btn-estado">
+                    <%= prod.activo === 1 ? 'Desactivar' : 'Activar' %>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        <% } %>
+      </tbody>
+    </table>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer-nombres">Bautista Di Meo &mdash; Manuel Hulej &mdash; Agustina Dominguez</p>
+    <p class="footer-copy">ArgenGaming &copy; 2026 &mdash; Programación III &mdash; UTN Avellaneda</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" type="image/png" href="/img/the-evolution-of-gaming-identity-free-png.png">
+  <title>Login Administrador – ArgenGaming</title>
+</head>
+<body class="tema-oscuro">
+
+  <header>
+    <div class="logo-area">
+      <img src="/img/the-evolution-of-gaming-identity-free-png.png" alt="Logo" width="50">
+      <h1>ArgenGaming <span>[Panel de Control]</span></h1>
+    </div>
+    <nav>
+      <a href="/" class="btn-volver">Volver al sitio</a>
+    </nav>
+  </header>
+
+  <main style="display: flex; justify-content: center; align-items: center; min-height: 75vh;">
+    <div class="modal" style="width: 100%; max-width: 380px; padding: 36px; position: static;">
+      
+      <h2 style="font-family: 'Sora', sans-serif; color: #dbfcff; font-size: 1.4rem; margin-bottom: 24px;">Iniciar Sesión</h2>
+
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div style="background-color: rgba(255, 180, 171, 0.12); border: 1px solid #ffb4ab; color: #ffb4ab; padding: 10px; border-radius: 4px; margin-bottom: 16px; font-size: 0.85rem;">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <form action="/admin/login" method="POST" style="display: flex; flex-direction: column; gap: 16px; text-align: left;">
+        <div>
+          <label for="email" style="font-size: 0.75rem; color: #849495; text-transform: uppercase;">Correo electrónico</label>
+          <input type="email" id="email" name="email" required style="width: 100%; background: #131315; border: 1px solid #3b494b; padding: 10px; color: #e5e1e4; margin-top: 4px; border-radius: 4px;">
+        </div>
+
+        <div>
+          <label for="password" style="font-size: 0.75rem; color: #849495; text-transform: uppercase;">Contraseña</label>
+          <input type="password" id="password" name="password" required style="width: 100%; background: #131315; border: 1px solid #3b494b; padding: 10px; color: #e5e1e4; margin-top: 4px; border-radius: 4px;">
+        </div>
+
+        <button type="submit" class="btn-continuar" style="margin-top: 8px;">Ingresar</button>
+      </form>
+
+      <hr style="border: none; border-top: 1px solid #2a2a2c; margin: 24px 0;">
+
+      <!-- Botón de autocompletado sobrio, con el estilo secundario de tu CSS -->
+      <button type="button" class="btn-volver" style="width: 100%; text-align: center; font-size: 0.8rem;" onclick="accesoRapido()">
+        Autocompletar credenciales de prueba
+      </button>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-nombres">Bautista Di Meo &mdash; Manuel Hulej &mdash; Agustina Dominguez</p>
+    <p class="footer-copy">ArgenGaming &copy; 2026 &mdash; Programación III &mdash; UTN Avellaneda</p>
+  </footer>
+
+  <script>
+    function accesoRapido() {
+      document.getElementById('email').value = 'admin123@gmail.com';
+      document.getElementById('password').value = 'admin123';
+    }
+  </script>
+
+</body>
+</html>

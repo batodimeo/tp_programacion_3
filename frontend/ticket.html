@@ -228,10 +228,33 @@
     function salir() {
       guardarCarrito([]);
       localStorage.removeItem("nombreUsuario");
+      localStorage.removeItem("ventaRegistrada");
       window.location.href = "index.html";
     }
 
+    // Guarda la venta en la base de datos, solo una vez por compra
+    async function registrarVenta() {
+      // Si ya se registró esta compra, no volver a registrar
+      if (localStorage.getItem("ventaRegistrada") === "true") return;
+
+      const carrito = obtenerCarrito();
+      const nombre = localStorage.getItem("nombreUsuario") || "Cliente";
+
+      try {
+        await fetch("http://localhost:3000/api/ventas", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombreCliente: nombre, carrito })
+        });
+        // Marcar como registrada para no duplicar
+        localStorage.setItem("ventaRegistrada", "true");
+      } catch (error) {
+        console.error("No se pudo registrar la venta:", error);
+      }
+    }
+
     renderTicket();
+    registrarVenta();
   </script>
 </body>
 </html>
